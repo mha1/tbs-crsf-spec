@@ -399,13 +399,17 @@ Frame type used to transmit temperature telemetry data from the vehicle to the t
     int16_t     temperature[];        // up to 20 temperature values in deci-degree (tenths of a degree) Celsius (e.g., 250 = 25.0°C, -50 = -5.0°C)
 ```
 
-## 0x0E Cells Sensor
+## 0x0E VOLTAGE
 
-Frame type sends each cell's Voltage from the craft's main battery to the transmitter. Sensors handle up to 29s batteries, with multiple sensors for multi-battery crafts.
+Frame type used to transmit voltage telemetry from the craft to the transmitter. This frame can be used to report general voltages or battery cell voltages from various sources on the vehicle, such as batteries, ESCs, or other voltage sources.
+
+Telemetry decoding of 0X0E frames shall either be of:
+- type cells sensor: use source_id in the range of 0..127 to indicate frame transmits cells sensor data
+- type general voltage sensor: use source_id in the range of 128..255 to indicate frame transmits general voltage data
 
 ```cpp
-    uint8_t    Cell_Sensor_source_id;    // Identifies the source of the Main_battery data (e.g., 0 = battery 1, 1 = battery 2, etc.)
-    uint16_t    Cell_Sensor_value[];      // up to 29 cell values in a resolution of a thousandth of a Volt (e.g. 3.850V = 3850)
+    uint8_t     Voltage_Sensor_source_id; // Identifies the source of the voltages or battery cells data (e.g. 0 = cells sensor 1, 1 = cells sensor 2, 128 = ESC, 129 = general voltages)
+    uint16_t    Voltage_Sensor_value[];   // up to 29 voltages or cell values in a resolution of a thousandth of a Volt (e.g. 3.850V = 3850)
 ```
 
 ## 0x0F Discontinued
